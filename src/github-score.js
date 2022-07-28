@@ -11,7 +11,7 @@ const getRepositoryScore = (repo,additionalParams=null) => {
 
     const additionalParamScore = 0;
     const criticalityScore = 0;
-    const totalWeight = constants.FORKS_WEIGHT+constants.STARS_WEIGHT+constants.CLOSEDISSUE_WEIGHT+constants.CONTRIBUTORS_WEIGHT+constants.COMMITFREQUENCY_WEIGHT;
+    const totalWeight = constants.FORKS_WEIGHT+constants.STARS_WEIGHT+constants.CLOSEDISSUE_WEIGHT+constants.CONTRIBUTORS_WEIGHT+constants.COMMITFREQUENCY_WEIGHT+constants.CREATED_AT_WEIGHT+constants.UPDATED_AT_WEIGHT+constants.RELEASES_WEIGHT;
 
     // additionalParams.map((additionalParam)=>{
     //     additionalParamScore += getParamScore(additionalParam.value,additionalParam.max_threshold,additionalParam.weight);
@@ -33,6 +33,15 @@ const getRepositoryScore = (repo,additionalParams=null) => {
     if(additionalParams.commitCount4W==null){
         additionalParams.commitCount4W=0;
     }
+    if(additionalParams.created_at==null){
+        additionalParams.created_at=0;
+    }
+    if(additionalParams.updated_at==null){
+        additionalParams.updated_at=0;
+    }
+    if(additionalParams.releases==null){
+        additionalParams.releases=0;
+    }
 
     criticalityScore = parseFloat((
         (getParamScore(
@@ -49,6 +58,15 @@ const getRepositoryScore = (repo,additionalParams=null) => {
         )) +
         (getParamScore(
             additionalParams.commitCount4W, constants.COMMITFREQUENCY_THRESHOLD,constants.COMMITFREQUENCY_WEIGHT
+        ))+
+        (getParamScore(
+            additionalParams.created_at, constants.COMMITFREQUENCY_THRESHOLD,constants.COMMITFREQUENCY_WEIGHT
+        ))+
+        (getParamScore(
+            additionalParams.updated_at, constants.COMMITFREQUENCY_THRESHOLD,constants.COMMITFREQUENCY_WEIGHT
+        ))+
+        (getParamScore(
+            additionalParams.releases, constants.COMMITFREQUENCY_THRESHOLD,constants.COMMITFREQUENCY_WEIGHT
         )) + additionalParamScore)  / totalWeight).toFixed(5);
         
         
