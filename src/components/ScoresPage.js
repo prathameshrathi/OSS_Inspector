@@ -5,7 +5,7 @@ import ReactScoreIndicator from "react-score-indicator"
 function ScoresPage({params}) {
     
     console.log(params);
-    const[score,setScore] = useState(6);
+    const[score,setScore] = useState(9);
   return (
     <div>
       <Typography
@@ -22,7 +22,7 @@ function ScoresPage({params}) {
       </Typography>
       <ReactScoreIndicator value={score} maxValue={10} lineWidth={10} />
       {score <= 5 && (
-        <Typography variant="h5" style={{ color: "red", textAlign: "center" }}>
+        <Typography style={{ color: "red", textAlign: "center" }}>
           Repository unsafe for use
         </Typography>
       )}
@@ -31,7 +31,7 @@ function ScoresPage({params}) {
           Average Repository
         </Typography>
       )}
-      {score >7 (
+      {score>7 && (
         <Typography variant="h5" style={{ color: "Green", textAlign: "center" }}>
           Vey Safe repository
         </Typography>
