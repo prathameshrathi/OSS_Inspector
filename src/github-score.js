@@ -7,7 +7,7 @@ const getParamScore = (param,maxValue,weight=1) => {
     return score;
 }
 
-const getRepositoryScore = (repo,additionalParams=null) => {
+const getRepositoryScore = (additionalParams=null) => {
 
     const additionalParamScore = 0;
     const criticalityScore = 0;
