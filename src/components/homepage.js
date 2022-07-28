@@ -1,4 +1,5 @@
 import React, { useState,useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { TextField, Typography, Button } from "@material-ui/core";
 
 function Homepage() {
@@ -11,8 +12,9 @@ function Homepage() {
   const [closedissue,setClosedissue] = useState();
   const [contributors,setContributors] = useState();
   const [cmf,setCmf] = useState();
+  let navigate = useNavigate();
 
-  const fetchData = () => {
+  const FetchData = () => {
     fetch(value)
       .then(response => {
         return response.json();
@@ -21,24 +23,18 @@ function Homepage() {
         setUsers(data);
         setForks(data["forks_count"]);
         setStars(data["stargazers_count"]);
-        setForks(data["forks_count"]);
-        setForks(data["forks_count"]);
-        setForks(data["forks_count"]);
-        console.log(forks);
-      })
+      });
+      console.log(forks)
+      navigate("/analysis", { state: { forks: forks } });
   }
 
-  // useEffect(() => {
-  //   fetchData()
-  // }, [])
-
   return (
-    <div style={{backgroundImage: `url("https://www.theindianwire.com/wp-content/uploads/2020/04/Flipkart.png")`,backgroundSize:"cover",height:"100vh"}}>
+    <div style={{backgroundSize:"cover",height:"100vh"}}>
     <div>
-      <Typography variant="h1" component="h2" style={{ textAlign: "center",color:"yellow" }}>
+      <Typography variant="h1" component="h2" style={{ textAlign: "center",color:"black"}}>
         OSS Inspector
       </Typography>
-      <div style={{textAlign:"center",margin:"30px"}}>
+      <div style={{textAlign:"center",margin:"27vh"}}>
       <TextField
         style = {{width: '600px', textAlign:'center', outlineColor:"red"}}
         id="outlined-basic"
@@ -51,8 +47,9 @@ function Homepage() {
           // console.log(val.target.value);
         }}
       />
-      <Button onClick={()=>{fetchData()}} variant="contained" color="primary" style={{marginLeft:"40px",marginTop:"8px"}}>Contained</Button>
+      <Button onClick={()=>{FetchData()}} variant="contained" color="primary" style={{marginLeft:"40px",marginTop:"2px",height:"52px"}}>Show Analysis</Button>
       </div>
+      <p>{forks}</p>
     </div>
     </div>
   );

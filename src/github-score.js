@@ -9,9 +9,9 @@ const getParamScore = (param,maxValue,weight=1) => {
 
 const getRepositoryScore = (repo,additionalParams=null) => {
 
-    const additionalParamScore = 0;
-    const criticalityScore = 0;
-    const totalWeight = constants.FORKS_WEIGHT+constants.STARS_WEIGHT+constants.CLOSEDISSUE_WEIGHT+constants.CONTRIBUTORS_WEIGHT+constants.COMMITFREQUENCY_WEIGHT;
+    var additionalParamScore = 0;
+    var criticalityScore = 0;
+    var totalWeight = constants.FORKS_WEIGHT+constants.STARS_WEIGHT+constants.CLOSEDISSUE_WEIGHT+constants.CONTRIBUTORS_WEIGHT+constants.COMMITFREQUENCY_WEIGHT;
 
     // additionalParams.map((additionalParam)=>{
     //     additionalParamScore += getParamScore(additionalParam.value,additionalParam.max_threshold,additionalParam.weight);
@@ -49,7 +49,8 @@ const getRepositoryScore = (repo,additionalParams=null) => {
         )) +
         (getParamScore(
             additionalParams.commitCount4W, constants.COMMITFREQUENCY_THRESHOLD,constants.COMMITFREQUENCY_WEIGHT
-        )) + additionalParamScore)  / totalWeight).toFixed(5);
+        )) + additionalParamScore) 
+         / totalWeight).toFixed(5);
         
         
         criticalityScore = Math.max(Math.min(criticalityScore,1),0);
