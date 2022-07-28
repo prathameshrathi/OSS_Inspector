@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { TextField, Typography, Button } from "@material-ui/core";
+
 import moment from "moment";
+import React, { useState } from "react";
+import { TextField, Typography, Button } from "@material-ui/core";
+import Output from "./Output";
 
 function Homepage() {
   const [value, setvalue] = useState("");
@@ -41,7 +43,6 @@ function Homepage() {
 
     if (dd < 10) dd = '0' + dd;
     if (mm < 10) mm = '0' + mm;
-
     var formattedToday = `${mm} + / + ${dd} + / + ${yyyy}`;
     formattedToday = moment.
     date1 = Math.abs(formattedToday - date1);
@@ -62,6 +63,7 @@ function Homepage() {
     //   fetchCommit();
     // })
   };
+
 
   const fetchParams = () => {
     console.log("Forks: " + forks);
