@@ -9,7 +9,6 @@ const App = ()=>{
     <BrowserRouter>
       <Routes>
         <Route exact path="/" element={<Homepage/>}/>
-        <Route exact path="/analysis" element={<ScoresPage/>}/>
       </Routes>
     </BrowserRouter>
   );
