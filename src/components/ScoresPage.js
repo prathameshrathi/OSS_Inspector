@@ -5,7 +5,7 @@ import ReactScoreIndicator from "react-score-indicator"
 function ScoresPage({params}) {
     
     console.log(params);
-    const[score,setScore] = useState(9);
+    const[score,setScore] = useState(1);
   return (
     <div>
       <Typography
@@ -23,7 +23,7 @@ function ScoresPage({params}) {
       <ReactScoreIndicator value={score} maxValue={10} lineWidth={10} />
       {score <= 5 && (
         <Typography style={{ color: "red", textAlign: "center" }}>
-          Repository unsafe for use
+          Repository scan score is too low.<br/> It might contain malicious code !.
         </Typography>
       )}
       {score > 5 && score<=7 && (
@@ -33,11 +33,11 @@ function ScoresPage({params}) {
       )}
       {score>7 && (
         <Typography variant="h5" style={{ color: "Green", textAlign: "center" }}>
-          Vey Safe repository
+          Very Safe repository
         </Typography>
       )}
-
-      <Box sx={{ flexGrow: 1 }} style={{ margin: "90px" }}>
+      {/* <div textAlign='center'> */}
+      <Box position={'center'} sx={{ flexGrow: 1 }} style={{ margin: "90px" }}>
         <Grid container spacing={2}>
           <Grid xs={3} item spacing={1}>
             <Card>
@@ -125,7 +125,8 @@ function ScoresPage({params}) {
           </Grid>
         </Grid>
       </Box>
-    </div>
+      </div>
+    // </div>
   );
 }
 

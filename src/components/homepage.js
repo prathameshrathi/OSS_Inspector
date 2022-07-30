@@ -64,8 +64,8 @@ function Homepage() {
   };
 
   const fetchParams = () => {
-    console.log("Forks: " + forks);
-    console.log("Stars: " + stars);
+    // console.log("Forks: " + forks);
+    // console.log("Stars: " + stars);
     const commit_url = value + "/commits";
     const contri_url = value + "/contributors";
     const closedissues_url = value + "/issues?state=closed";
