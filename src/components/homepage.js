@@ -1,20 +1,23 @@
 
+import { useNavigate } from "react-router-dom";
 import moment from "moment";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { TextField, Typography, Button } from "@material-ui/core";
-// import Output from "./Output";
+import ScoresPage from "./ScoresPage";
 
 function Homepage() {
   const [value, setvalue] = useState("");
-  const [users, setUsers] = useState();
-  const [forks, setForks] = useState();
-  const [stars, setStars] = useState();
-  const [closedissue, setClosedissue] = useState();
-  const [contributors, setContributors] = useState();
+  const [flag,setflag] = useState(false);
+  const [forks, setForks] = useState(0);
+  const [stars, setStars] = useState(0);
+  const [closedissue, setClosedissue] = useState(0);
+  const [contributors, setContributors] = useState(0);
   const [cmf, setCmf] = useState(0);
-  const [created_at,setCreationDate] = useState();
-  const [updated_at,setUpdationDate] = useState();
-  const [releases,setReleases] = useState();
+  const [created_at,setCreationDate] = useState(0);
+  const [updated_at,setUpdationDate] = useState(0);
+  const [releases,setReleases] = useState(0);
+  const [score,setScore] = useState(0);
+
   var additionalParams = {
     "forks":forks,
     "stars":stars,
@@ -25,45 +28,40 @@ function Homepage() {
     "updated_at":updated_at,
     "releases":releases
   }
-  const fetchData = () => {
-    var data;
-    fetch(value).then((response) => {
+  const FetchData = () => {
+    var url;
+    if(value.substring(0,8)==="https://"){
+        url = "https://api." + value.substring(8); 
+    }
+    else{
+      url = "https://api." + value;
+    }
+    fetch(url).then((response) => {
       return response.json();
     })
     .then((data) => {
     setForks(data["forks_count"]);
     setStars(data["stargazers_count"]);
-    var date1 = moment.utc(data["created_at"]).format("MM/DD/YYYY");
-    var date2 = moment.utc(data["updated_at"]).format("MM/DD/YYYY");
-    console.log(date1);
+
+    var date1 = moment.utc(data["created_at"]).format("YYYY/MM/DD");
+    var date2 = moment.utc(data["updated_at"]).format("YYYY/MM/DD");
+    // console.log(date1);
     var today = new Date();
-    var yyyy = today.getFullYear();
-    let mm = today.getMonth() + 1; // Months start at 0!
-    let dd = today.getDate();
-
-    if (dd < 10) dd = '0' + dd;
-    if (mm < 10) mm = '0' + mm;
-    var formattedToday = `${mm} + / + ${dd} + / + ${yyyy}`;
-
-    date1 = Math.abs(formattedToday - date1);
-    date2 = Math.abs(formattedToday - date2);
+    today = moment(today).format("YYYY/MM/DD");
+    // console.log(today)
+    date1 = (new Date(today) - new Date(date1));
+    date2 = (new Date(today) - new Date(date2));
     date1 = Math.ceil(date1 / (1000 * 60 * 60 * 24));
     date2 = Math.ceil(date2 / (1000 * 60 * 60 * 24));
-    console.log(date1);
+    // console.log(date1);
+    // console.log(date2);
     setCreationDate(date1);
     setUpdationDate(date2);
+    setflag(true);
     fetchParams();
     });
-    // .then(()=>{
-    //   setForks(data["forks_count"]);
-    //   setStars(data["stargazers_count"]);
-    //   setForks(data["forks_count"]);
-    //   setForks(data["forks_count"]);
-    //   console.log(forks);
-    //   fetchCommit();
-    // })
+   
   };
-
 
   const fetchParams = () => {
     console.log("Forks: " + forks);
@@ -107,25 +105,20 @@ function Homepage() {
       });
       // console.log(created_at);
       // console.log(updated_at);
+      
   };
 
   return (
-    <div
-      style={{
-        backgroundImage: `url("https://www.theindianwire.com/wp-content/uploads/2020/04/Flipkart.png")`,
-        backgroundSize: "cover",
-        height: "100vh",
-      }}
-    >
-      <div>
+    <div>
+      <div style={{}}>
         <Typography
           variant="h1"
           component="h2"
-          style={{ textAlign: "center", color: "yellow" }}
+          style={{ textAlign: "center", color: "black" }}
         >
           OSS Inspector
         </Typography>
-        <div style={{ textAlign: "center", margin: "30px" }}>
+        <div style={{ textAlign: "center", margin: "10vh" }}>
           <TextField
             style={{ width: "600px", textAlign: "center", outlineColor: "red" }}
             id="outlined-basic"
@@ -140,16 +133,17 @@ function Homepage() {
           />
           <Button
             onClick={() => {
-              fetchData();
+              FetchData();
             }}
             variant="contained"
             color="primary"
-            style={{ marginLeft: "40px", marginTop: "8px" }}
+            style={{ marginLeft: "40px", marginTop: "2px", height: "52px" }}
           >
-            Contained
-          </Button>
+            Show Analysis
+          </Button>{" "}
         </div>
       </div>
+      {flag===true &&  <ScoresPage params={additionalParams}/>}
     </div>
   );
 }
