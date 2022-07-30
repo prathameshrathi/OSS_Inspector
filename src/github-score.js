@@ -7,11 +7,12 @@ const getParamScore = (param,maxValue,weight=1) => {
     return score;
 }
 
-const getRepositoryScore = (additionalParams=null) => {
+const getRepositoryScore = (additionalParams) => {
 
+    console.log(additionalParams);
     const additionalParamScore = 0;
-    const criticalityScore = 0;
-    const totalWeight = constants.FORKS_WEIGHT+constants.STARS_WEIGHT+constants.CLOSEDISSUE_WEIGHT+constants.CONTRIBUTORS_WEIGHT+constants.COMMITFREQUENCY_WEIGHT+constants.CREATED_AT_WEIGHT+constants.UPDATED_AT_WEIGHT+constants.RELEASES_WEIGHT;
+    var criticalityScore = 2;
+    var totalWeight = constants.FORKS_WEIGHT+constants.STARS_WEIGHT+constants.CLOSEDISSUE_WEIGHT+constants.CONTRIBUTORS_WEIGHT+constants.COMMITFREQUENCY_WEIGHT+constants.CREATED_AT_WEIGHT+constants.UPDATED_AT_WEIGHT+constants.RELEASES_WEIGHT;
 
     // additionalParams.map((additionalParam)=>{
     //     additionalParamScore += getParamScore(additionalParam.value,additionalParam.max_threshold,additionalParam.weight);
@@ -67,11 +68,12 @@ const getRepositoryScore = (additionalParams=null) => {
         ))+
         (getParamScore(
             additionalParams.releases, constants.COMMITFREQUENCY_THRESHOLD,constants.COMMITFREQUENCY_WEIGHT
-        )) + additionalParamScore)  / totalWeight).toFixed(5);
+        )) + additionalParamScore)  / totalWeight).toFixed(3);
         
         
         criticalityScore = Math.max(Math.min(criticalityScore,1),0);
-        return criticalityScore;
+        console.log(criticalityScore*10);
+        return criticalityScore*10;
 
 }
 
