@@ -19,7 +19,7 @@ function Homepage() {
   const [releases,setReleases] = useState(0);
   const [score,setScore] = useState(0);
   const[status,setstatus] = useState(200);
-  const myref = React.createRef();
+  const myref = useRef(null);
 
   var additionalParams = {
     "forks":forks,
@@ -35,6 +35,8 @@ function Homepage() {
 
   const FetchData = async () => {
     var url;
+    console.log(myref.current);
+    
     if(value.substring(0,8)==="https://"){
         url = "https://api.github.com/repos/" + value.substring(19); 
     }
@@ -70,8 +72,6 @@ function Homepage() {
     setflag(true);
     // setScore(temp);
     fetchParams(url);
-    myref.current.scrollIntoView();
-    window.scrollTo(0,myref.current)
   };
 
   const fetchParams = async (url) => {
@@ -115,6 +115,7 @@ function Homepage() {
       const temp = getRepositoryScore(additionalParams);
       console.log(temp);
       setScore(temp);
+      myref.current.scrollIntoView();
   },[additionalParams])
 
   return (
@@ -186,9 +187,11 @@ function Homepage() {
           )}
         </div>
       </div>
-      {flag === true && (
-        <ScoresPage ref={myref}  params={additionalParams} score={score} />
-      )}
+      <div ref={myref}>
+        {flag === true && (
+            <ScoresPage params={additionalParams} score={score} />
+        )}
+      </div>
     </div>
   );
 }
