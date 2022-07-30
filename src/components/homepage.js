@@ -4,6 +4,7 @@ import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { TextField, Typography, Button } from "@material-ui/core";
 import ScoresPage from "./ScoresPage";
+import getRepositoryScore from "../github-score";
 
 function Homepage() {
   const [value, setvalue] = useState("");
@@ -105,7 +106,7 @@ function Homepage() {
       });
       // console.log(created_at);
       // console.log(updated_at);
-      
+    var getScore = getRepositoryScore(additionalParams);
   };
 
   return (
