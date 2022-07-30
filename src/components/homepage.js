@@ -38,16 +38,16 @@ function Homepage() {
 
     var date1 = moment.utc(data["created_at"]).format("YYYY/MM/DD");
     var date2 = moment.utc(data["updated_at"]).format("YYYY/MM/DD");
-    console.log(date1);
+    // console.log(date1);
     var today = new Date();
     today = moment(today).format("YYYY/MM/DD");
-    console.log(today)
+    // console.log(today)
     date1 = (new Date(today) - new Date(date1));
     date2 = (new Date(today) - new Date(date2));
     date1 = Math.ceil(date1 / (1000 * 60 * 60 * 24));
     date2 = Math.ceil(date2 / (1000 * 60 * 60 * 24));
-    console.log(date1);
-    console.log(date2);
+    // console.log(date1);
+    // console.log(date2);
     setCreationDate(date1);
     setUpdationDate(date2);
     setflag(true);
@@ -57,8 +57,8 @@ function Homepage() {
   };
 
   const fetchParams = () => {
-    console.log("Forks: " + forks);
-    console.log("Stars: " + stars);
+    // console.log("Forks: " + forks);
+    // console.log("Stars: " + stars);
     const commit_url = value + "/commits";
     const contri_url = value + "/contributors";
     const closedissues_url = value + "/issues?state=closed";
