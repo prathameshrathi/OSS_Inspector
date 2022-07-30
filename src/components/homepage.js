@@ -1,10 +1,10 @@
-
-import { useNavigate } from "react-router-dom";
 import moment from "moment";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { TextField, Typography, Button } from "@material-ui/core";
 import ScoresPage from "./ScoresPage";
 import getRepositoryScore from "../github-score";
+import axios from "axios";
+import Alert from '@mui/material/Alert'
 
 function Homepage() {
   const [value, setvalue] = useState("");
@@ -18,6 +18,8 @@ function Homepage() {
   const [updated_at,setUpdationDate] = useState(0);
   const [releases,setReleases] = useState(0);
   const [score,setScore] = useState(0);
+  const[status,setstatus] = useState(200);
+  const myref = useRef(null);
 
   var additionalParams = {
     "forks":forks,
@@ -27,25 +29,34 @@ function Homepage() {
     "commitCount4W":cmf,
     "created_at":created_at,
     "updated_at":updated_at,
-    "releases":releases
+    "releases":releases,
+    "score":score
   }
-  const FetchData = () => {
+
+  const FetchData = async () => {
     var url;
+    console.log(myref.current);
+    
     if(value.substring(0,8)==="https://"){
-        url = "https://api." + value.substring(8); 
+        url = "https://api.github.com/repos/" + value.substring(19); 
     }
     else{
-      url = "https://api." + value;
+      url = "https://api.github.com/repos/" + value.substring(11);
     }
-    fetch(url).then((response) => {
-      return response.json();
-    })
-    .then((data) => {
-    setForks(data["forks_count"]);
-    setStars(data["stargazers_count"]);
+    // console.log(url);
+    // console.log(url);
+    const res = await axios.get(url).catch(({response})=>{
+      setstatus(response.status);
+      setflag(false);
+    });
+    setstatus(res.status);
+    console.log(status)
+    setForks(res.data["forks_count"]);
+    console.log(forks);
+    setStars(res.data["stargazers_count"]);
 
-    var date1 = moment.utc(data["created_at"]).format("YYYY/MM/DD");
-    var date2 = moment.utc(data["updated_at"]).format("YYYY/MM/DD");
+    var date1 = moment.utc(res.data["created_at"]).format("YYYY/MM/DD");
+    var date2 = moment.utc(res.data["updated_at"]).format("YYYY/MM/DD");
     // console.log(date1);
     var today = new Date();
     today = moment(today).format("YYYY/MM/DD");
@@ -59,69 +70,83 @@ function Homepage() {
     setCreationDate(date1);
     setUpdationDate(date2);
     setflag(true);
-    fetchParams();
-    });
-   
+    // setScore(temp);
+    fetchParams(url);
   };
 
-  const fetchParams = () => {
+  const fetchParams = async (url) => {
     // console.log("Forks: " + forks);
     // console.log("Stars: " + stars);
-    const commit_url = value + "/commits";
-    const contri_url = value + "/contributors";
-    const closedissues_url = value + "/issues?state=closed";
-    const releases_url = value + "/releases";
+    const commit_url = url + "/commits";
+    const contri_url = url + "/contributors";
+    const closedissues_url = url + "/issues?state=closed";
+    const releases_url = url + "/releases";
     // https://api.github.com/repos/ossf/criticality_score/issues?state=open
-    fetch(commit_url)
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        setCmf(data.length);
-        // console.log(cmf);
-      });
-    fetch(contri_url)
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        setContributors(data.length);
+
+    var res = await axios.get(commit_url)
+        // console.log(response)
+    console.log(res.data);
+    setCmf(res.data.length);
+    console.log(cmf);
+    console.log("A");
+    var res1 = await axios.get(contri_url)
+    setContributors(res1.data.length);
         // console.log(contributors);
-      });
-    fetch(closedissues_url)
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        setClosedissue(data.length);
+      console.log("B");
+    var res2 = await axios.get(closedissues_url)
+    setClosedissue(res2.data.length);
         // console.log(closedissue);
-      });
-    fetch(releases_url)
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        setReleases(data.length);
+      console.log("C");
+    var res3 = await axios.get(releases_url)
+    setReleases(res3.data.length);
         // console.log(closedissue);
-      });
+      console.log("D");
       // console.log(created_at);
       // console.log(updated_at);
-    var getScore = getRepositoryScore(additionalParams);
+      // if(stars && forks && updated_at && releases){
+      // }
+      // {forks && stars && releases && updated_at && getRepositoryScore(additionalParams)}
+      // setScore(temp);
+      // console.log(temp);
+      
   };
+
+  useEffect(()=>{
+      const temp = getRepositoryScore(additionalParams);
+      console.log(temp);
+      setScore(temp);
+      myref.current.scrollIntoView();
+  },[additionalParams])
 
   return (
     <div>
-      <div style={{}}>
-        <Typography
-          variant="h1"
-          component="h2"
-          style={{ textAlign: "center", color: "black" }}
-        >
-          OSS Inspector
-        </Typography>
+      <div>
+        {flag === false && (
+          <Typography
+            variant="h1"
+            component="h2"
+            style={{ textAlign: "center", color: "black" }}
+          >
+            OSS Inspector
+          </Typography>
+        )}
+        {flag === true && (
+          <Typography
+            variant="h3"
+            component="h2"
+            style={{
+              textAlign: "center",
+              color: "black",
+              bottomMargin: "-30px",
+            }}
+          >
+            OSS Inspector
+          </Typography>
+        )}
+
         <div style={{ textAlign: "center", margin: "10vh" }}>
           <TextField
-            style={{ width: "600px", textAlign: "center", outlineColor: "red" }}
+            style={{ width: "50%", textAlign: "center", outlineColor: "red" }}
             id="outlined-basic"
             label="URL"
             variant="outlined"
@@ -138,13 +163,35 @@ function Homepage() {
             }}
             variant="contained"
             color="primary"
-            style={{ marginLeft: "40px", marginTop: "2px", height: "52px" }}
+            style={{
+              marginLeft: "40px",
+              marginTop: "2px",
+              height: "52px",
+              width: "13%",
+            }}
           >
             Show Analysis
-          </Button>{" "}
+          </Button>
+          {status !== 200 && (
+            <Alert
+              severity="error"
+              style={{
+                alignItems: "center",
+                width: "20%",
+                marginLeft: "30%",
+                marginTop: "20px",
+              }}
+            >
+              <div style={{}}>Invalid Repository URL! Try Again</div>
+            </Alert>
+          )}
         </div>
       </div>
-      {flag===true &&  <ScoresPage params={additionalParams}/>}
+      <div ref={myref}>
+        {flag === true && (
+            <ScoresPage params={additionalParams} score={score} />
+        )}
+      </div>
     </div>
   );
 }
