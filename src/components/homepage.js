@@ -182,7 +182,7 @@ function Homepage() {
                 marginTop: "20px",
               }}
             >
-              <div style={{}}>Invalid Repository URL! Try Again</div>
+              <div style={{}}>Invalid Repository URL. Try Again!</div>
             </Alert>
           )}
         </div>
