@@ -115,7 +115,7 @@ function Homepage() {
       const temp = getRepositoryScore(additionalParams);
       console.log(temp);
       setScore(temp);
-      myref.current.scrollIntoView();
+      myref.current.scrollIntoView({block:'end',behavior:'smooth'});
   },[additionalParams])
 
   return (
