@@ -1,10 +1,9 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Typography,Card,Grid,Box,CardContent} from "@material-ui/core";
 import ReactScoreIndicator from "react-score-indicator"
 
 function ScoresPage(props) {
     
-    // console.log(props.params.score);
   return (
     <div>
       <Typography
@@ -43,10 +42,10 @@ function ScoresPage(props) {
           variant="h5"
           style={{ color: "Green", textAlign: "center" }}
         >
-          Repository score is high.<br/> It's Good to Go!!
+          Repository score is high.<br/> Good to Go!!
         </Typography>
       )}
-      {/* <div textAlign='center'> */}
+
       <Box position={"center"} sx={{ flexGrow: 1 }} style={{ margin: "90px" }}>
         <Grid container spacing={2}>
           <Grid md={3} xs={6} item spacing={1}>
@@ -148,7 +147,7 @@ function ScoresPage(props) {
         </Grid>
       </Box>
     </div>
-    // </div>
+    
   );
 }
 

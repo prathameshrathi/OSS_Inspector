@@ -1,7 +1,6 @@
 import React from "react";
 import Homepage from "./components/homepage";
 import {BrowserRouter,Route,Routes} from "react-router-dom";
-import ScoresPage from "./components/ScoresPage";
 // import { TextField } from "@material-ui/core";
 
 const App = ()=>{
