@@ -14,9 +14,6 @@ const getRepositoryScore = (additionalParams) => {
     var criticalityScore = 2;
     var totalWeight = constants.FORKS_WEIGHT+constants.STARS_WEIGHT+constants.CLOSEDISSUE_WEIGHT+constants.CONTRIBUTORS_WEIGHT+constants.COMMITFREQUENCY_WEIGHT+constants.CREATED_AT_WEIGHT+constants.UPDATED_AT_WEIGHT+constants.RELEASES_WEIGHT;
 
-    // additionalParams.map((additionalParam)=>{
-    //     additionalParamScore += getParamScore(additionalParam.value,additionalParam.max_threshold,additionalParam.weight);
-    // })   
 
     //Validating
     if(additionalParams.forks==null){
@@ -72,7 +69,7 @@ const getRepositoryScore = (additionalParams) => {
         
         
         criticalityScore = Math.max(Math.min(criticalityScore,1),0);
-        console.log(criticalityScore*10);
+
         return criticalityScore*10;
 
 }

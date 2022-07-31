@@ -1,10 +1,9 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Typography,Card,Grid,Box,CardContent} from "@material-ui/core";
 import ReactScoreIndicator from "react-score-indicator"
 
 function ScoresPage(props) {
     
-    // console.log(props.params.score);
   return (
     <div>
       <Typography
@@ -24,18 +23,18 @@ function ScoresPage(props) {
         maxValue={10}
         lineWidth={10}
       />
-      {props.params.score <= 5 && (
+      {props.params.score < 4 && (
         <Typography style={{ color: "red", textAlign: "center" }}>
           Repository scan score is too low.
-          <br /> It might contain malicious code !.
+          <br /> It might contain malicious code !!
         </Typography>
       )}
-      {props.params.score > 5 && props.params.score <= 7 && (
+      {props.params.score >= 4 && props.params.score <= 7 && (
         <Typography
           variant="h5"
-          style={{ color: "yellow", textAlign: "center" }}
+          style={{ color: "orange", textAlign: "center" }}
         >
-          Average Repository
+          Average Repository Score! <br/>Less chances of malicious code.
         </Typography>
       )}
       {props.params.score > 7 && (
@@ -43,10 +42,10 @@ function ScoresPage(props) {
           variant="h5"
           style={{ color: "Green", textAlign: "center" }}
         >
-          Very Safe repository
+          Repository score is high.<br/> Good to Go!!
         </Typography>
       )}
-      {/* <div textAlign='center'> */}
+
       <Box position={"center"} sx={{ flexGrow: 1 }} style={{ margin: "90px" }}>
         <Grid container spacing={2}>
           <Grid md={3} xs={6} item spacing={1}>
@@ -148,7 +147,7 @@ function ScoresPage(props) {
         </Grid>
       </Box>
     </div>
-    // </div>
+    
   );
 }
 
